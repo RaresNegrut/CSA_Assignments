@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1259
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MooresLaw", "MooresLaw\MooresLaw.csproj", "{AEBB0B8C-066B-4EF9-8203-82C2854C6C53}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AEBB0B8C-066B-4EF9-8203-82C2854C6C53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEBB0B8C-066B-4EF9-8203-82C2854C6C53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEBB0B8C-066B-4EF9-8203-82C2854C6C53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEBB0B8C-066B-4EF9-8203-82C2854C6C53}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C3248903-2670-47B2-8399-5CBC1540F2A5}
+	EndGlobalSection
+EndGlobal
