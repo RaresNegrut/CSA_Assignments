@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static System.Math;
 
 
@@ -26,7 +23,8 @@ namespace Base_Conversion
         static void ToDec(ref string shrek, bool IsHex, int NumberBase)
         {
             double sum = 0;
-            int digit;
+            int digit, Initial_INT_Index = shrek.Length - 1 - (shrek.Substring(shrek.IndexOf('.'))).Length;
+            //Initial_INT_Index is used to compute and store the powers necessary to convert from the original base to decimal
             if (IsHex)
                 for (int i = 0; i < shrek.Length; i++)
                 {
@@ -58,30 +56,46 @@ namespace Base_Conversion
                             digit = shrek[i] - '0';
                             break;
                     }
-                    if(i<shrek.IndexOf('.'))
-                    sum = sum + (double)digit * (Pow(NumberBase, shrek.Length - 2 - i - shrek.IndexOf('.')));
+
+                    sum = sum + (double)digit * (Pow(NumberBase, Initial_INT_Index));
+
+
+
+                    if (shrek[i] != '.')
+                        Initial_INT_Index--;
+                }
+            else
+                for (int i = 0; i < shrek.Length; i++)
+                {
+                    if (shrek[i] != '.')
+                        digit = shrek[i] - '0';
                     else
-                        sum = sum + (double)digit * (Pow(NumberBase, shrek.Length - 2 - i));
+                        digit = 0;
+
+                    sum = sum + (double)digit * (Pow(NumberBase, Initial_INT_Index));
+
+                    if (shrek[i] != '.')
+                        Initial_INT_Index--;
                 }
             shrek = Convert.ToString(sum);
         }
-        static void ToBase(ref string Number,ref string IntegerPart,ref string FractionalPart,int NewBase,bool IsNewHex)
+        static void ToBase(ref string Number, ref string IntegerPart, ref string FractionalPart, int NewBase, bool IsNewHex)
         {
             //this function converts numbers from the decimal numerical system to the desired numerical system
             int index = Number.IndexOf('.');
-            StringSeparation(Number, ref IntegerPart,ref FractionalPart, index);
+            StringSeparation(Number, ref IntegerPart, ref FractionalPart, index);
 
-            int.TryParse(IntegerPart,out int TempInt);
+            int.TryParse(IntegerPart, out int TempInt);
             IntegerPart = "";
             Stack<int> NewIntDigits = new Stack<int>();
 
-            while (TempInt!=0)
+            while (TempInt != 0)
             {
-                NewIntDigits.Push(TempInt%NewBase);
+                NewIntDigits.Push(TempInt % NewBase);
                 TempInt /= NewBase;
             }
 
-            while(NewIntDigits.Count!=0)
+            while (NewIntDigits.Count != 0)
             {
                 IntegerPart += NewIntDigits.Pop().ToString();
             }
@@ -91,7 +105,7 @@ namespace Base_Conversion
             int i = 0;
             double TempFract = double.Parse("0." + FractionalPart);
             Queue<int> NewFracDigits = new Queue<int>();
-            while((TempFract-(long)TempFract)!=0 ||i<=need)
+            while ((TempFract - (long)TempFract) != 0 || i <= need)
             {
                 TempFract *= NewBase;
                 NewFracDigits.Enqueue((int)TempFract);
@@ -102,9 +116,9 @@ namespace Base_Conversion
             int digit;
 
 
-            while(NewFracDigits.Count!=0)
+            while (NewFracDigits.Count != 0)
             {
-                if(IsNewHex==true)
+                if (IsNewHex == true)
                 {
                     //switch(NewFracDigits.Peek())
                     //{
@@ -163,14 +177,17 @@ namespace Base_Conversion
 
                 Console.WriteLine("We will also need the base you want the number to be converted to");
                 int NewBase = int.Parse(Console.ReadLine());
+
                 bool IsNewHex;
+
                 if (NewBase == 16)
                     IsNewHex = true;
                 //in these two strings we will store the integer part and the fractional part of our number
+
                 string IntegerPart = "", FractionalPart = "";
 
                 bool IsHex = false;
-                foreach (var (c, index) in Number.Select((value, i) => (value, i)))
+                foreach (char c in Number)
                 {
                     if ((char.IsLetter(c) && c >= 'A' && c <= 'F') || NumberBase == 16)
                         IsHex = true;
@@ -178,7 +195,7 @@ namespace Base_Conversion
                         if (((c < 'A' || c > 'F') && char.IsLetter(c)))//TODO: Check for other symbols
                         throw new Exception("Your input contains forbidden characters; please give a valid input");
                     //if (c == '.' || c == ',')
-                        //StringSeparation(Number, ref IntegerPart, ref FractionalPart, index);
+                    //StringSeparation(Number, ref IntegerPart, ref FractionalPart, index);
                     //i think i'll do this bit in the ToBase function
                 }
                 ToDec(ref Number, IsHex, NumberBase);
