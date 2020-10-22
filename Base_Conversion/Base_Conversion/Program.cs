@@ -149,21 +149,19 @@ namespace Base_Conversion
 
             if (OnlyInt == false)
             {
-                int FracPartLength = FractionalPart.Length;
                 int i = 0;
 
                 double TempFract = double.Parse("0." + FractionalPart);
 
                 Queue<int> NewFracDigits = new Queue<int>();
 
-                while ((TempFract - (long)TempFract) != 0 && i <= FracPartLength + 2)//converting from 0.2(10) to binary yields 0.0 as a result; to fix this, i had to let the loop run for some more iterationt
+                while ((TempFract - (long)TempFract) != 0 && i <= 5)//i could implement a way of asking the user how many digits are wanted for the fractional part(if the number is not an integer)
                 {
                     TempFract *= NewBase;
                     NewFracDigits.Enqueue((int)TempFract);
                     TempFract = TempFract - (long)TempFract;
                     i++;
                 }
-                //i suppose a drawback of this program is the inaccuracy caused by having few digits for the fractional part
                 FractionalPart = "";
 
 
