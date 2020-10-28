@@ -255,6 +255,10 @@ namespace Base_Conversion
             }
             catch (Exception e)
             { Console.WriteLine(e.Message); }
+            finally
+            {
+                Console.ReadKey();
+            }
 
         }
     }
