@@ -83,6 +83,7 @@ namespace Base_Conversion
                         Initial_INT_Index--;
                 }
             Number = Convert.ToString(sum);
+            Console.WriteLine(Number);
         }
         //this function converts from base ten to any base(between binary and hexadecimal)
         static void ToBase(ref string Number, ref string IntegerPart, ref string FractionalPart, int NewBase, bool IsNewBiggerThanDec)
