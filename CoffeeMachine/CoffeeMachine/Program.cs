@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+//using System.IO;
+using  static CoffeeMachine.VendingMachine.IO;
+
 
 namespace CoffeeMachine
 {
-    //TODO: BIG: IMPLEMENT A BALANCE SYSTEM AND I/O
     class VendingMachine
     {
         private State stateRef = null;
@@ -47,7 +49,13 @@ namespace CoffeeMachine
             public static void input()
             {
                 Console.WriteLine("Enter a coin: Nickel(N), Dime(D), or Quarter(Q)");
-                char coin = char.Parse(Console.ReadLine().ToUpper());
+                string line= Console.ReadLine().ToUpper();
+                if (line == "")
+                    throw new Exception("Nothing entered, try again");
+                if (line.Length > 1)
+                    throw new Exception("Input must be exactly one character long");
+
+                var coin = char.Parse(line);
                 switch (coin)
                 {
                     case 'N':
@@ -62,7 +70,24 @@ namespace CoffeeMachine
                     default:
                         throw new Exception("This machine only accepts Nickels, Dimes or Quarters");
                 }
-
+            } 
+            public static void DispenseMerchandise()
+            {
+                Console.WriteLine("Dispensed a coffee, enjoy");
+                Console.ForegroundColor = ConsoleColor.Red;
+                System.IO.StreamReader f = new System.IO.StreamReader(@"..\..\Resources\TextFile1.txt");
+                string line;
+                while ((line = f.ReadLine()) != null)
+                    Console.WriteLine(line);
+                Console.ResetColor();
+            }
+            public static void DropChange(string change)
+            {
+                Console.WriteLine($"Your change is a {change}");
+            }
+            public static void DropChange(string change1, string change2)
+            {
+                Console.WriteLine($"Your change is a {change1} and a {change2}");
             }
         }
 
@@ -87,8 +112,6 @@ namespace CoffeeMachine
     /// </summary>
     class StateA : State
     {
-
-
         public override void NickelEntered()
         {
             machineRef.TransitionTo(new StateB());
@@ -101,9 +124,9 @@ namespace CoffeeMachine
 
         public override void QuarterEntered()
         {
-            //TODO: Return a nickel and dispense merch
+            DropChange("Nickel");
+            DispenseMerchandise();
             machineRef.TransitionTo(new StateA());
-
         }
     }
     /// <summary>
@@ -127,7 +150,8 @@ namespace CoffeeMachine
 
         public override void QuarterEntered()
         {
-            //TODO:Return a dime and dispense merch
+            DropChange("dime");
+            DispenseMerchandise();
             machineRef.TransitionTo(new StateA());
         }
     }
@@ -143,13 +167,15 @@ namespace CoffeeMachine
 
         public override void DimeEntered()
         {
-            //TODO:Dispense merch
+            DispenseMerchandise();
             machineRef.TransitionTo(new StateA());
         }
 
         public override void QuarterEntered()
         {
-            //TODO: Dispense merch and return dime+quarter
+            DropChange("dime", "nickel");
+            DispenseMerchandise();
+            //TODO: Dispense merch and return dime+nickel
             machineRef.TransitionTo(new StateA());
         }
     }
@@ -160,19 +186,23 @@ namespace CoffeeMachine
     {
         public override void NickelEntered()
         {
+            DispenseMerchandise();
             //TODO: Dispense Merch
             machineRef.TransitionTo(new StateA());
         }
 
         public override void DimeEntered()
         {
+            DropChange("nickel");
+            DispenseMerchandise();
             //TODO: Dispense merch and return a nickel
             machineRef.TransitionTo(new StateA());
         }
 
         public override void QuarterEntered()
         {
-            //TODO: Dispense merch and return two dimes
+            DropChange("dime", "dime");
+            DispenseMerchandise();
             machineRef.TransitionTo(new StateA());
         }
     }
